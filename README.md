@@ -1,4 +1,4 @@
-Weather Station and Mosquitto MQTT Values for LilyGO T5 4.7 inch e-paper display
+Weather Station for LilyGO T5 4.7 inch e-paper display
 =======================================
 
 This project works with LilyGO T5 4.7 inch e-paper EPD display as available from [AliExpress](https://aliexpress.com/item/1005002272417292.html) and [OpenWeatherMap (OMW)](https://home.openweathermap.org) as ESP32 weather display.
@@ -6,14 +6,14 @@ This project works with LilyGO T5 4.7 inch e-paper EPD display as available from
 ![](./assets/LilyGoWeatherStation.jpg)
 
 ## Compiling and flashing
-Edit user_settings.h and enter OWM API key as well as the location for which you want to display the weather data.
+Rename user_settings_sample.h to user_settings.h and enter OWM API key as well as the location for which you want to display the weather data.
 
-To compile you will need following libraries  
+To compile you will need following libraries
 - https://github.com/Xinyuan-LilyGO/LilyGo-EPD47
-- https://github.com/bblanchon/ArduinoJson  
+- https://github.com/bblanchon/ArduinoJson
 
-In board manager choose ESP32 Dev Module with PSRAM Enabled.  
-The project is configured as PlatformIO Project (Visual Studio Code AddIn) - to compile with arduino IDE rename src folder to OWM_EPD47.
+In board manager choose ESP32 Dev Module with PSRAM Enabled.
+The project is configured as PlatformIO Project (Visual Studio Code Addon).
 
 ## LilyGO T5 Display FAQ
 
@@ -25,8 +25,8 @@ The project is configured as PlatformIO Project (Visual Studio Code AddIn) - to 
 
 [GNU GENERAL PUBLIC LICENSE](./LICENSE)
 
-## Remarks 
-_(forked from [DzikuVx/LilyGo-EPD-4-7-OWM-Weather-Display](https://github.com/DzikuVx/LilyGo-EPD-4-7-OWM-Weather-Display))_  
+## Remarks
+_(forked from [DzikuVx/LilyGo-EPD-4-7-OWM-Weather-Display](https://github.com/DzikuVx/LilyGo-EPD-4-7-OWM-Weather-Display))_
 
 The original code created by https://github.com/G6EJD/ is using the GPLv3 https://github.com/Xinyuan-LilyGO/LilyGo-EPD47 library to handle the display and as such falls into the GPLv3 license itself. This situation is described in the https://www.gnu.org/licenses/gpl-faq.html#IfLibraryIsGPL
 
@@ -37,7 +37,7 @@ The original code created by https://github.com/G6EJD/ is using the GPLv3 https:
 This means that the original proprietary license that G6EJD tried to enforce is unlawful as it is not compatible with the GPLv3 and removed from this fork, while keeping the attribution and all the copyright of the original creator.
 
 ## Support my work ...
-**with caffeine:**  
+**with caffeine:**
 
 <a href="https://www.buymeacoffee.com/cybdis" target="_blank">
   <img src="https://raw.githubusercontent.com/CybDis/CybDis/main/bmc-yellow-button.png" height="60px"/></a>
