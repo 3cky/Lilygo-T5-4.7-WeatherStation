@@ -9,20 +9,12 @@
 #include <WiFi.h>               // In-built
 #include <SPI.h>                // In-built
 #include <time.h>               // In-built
+
+#include "OWM_EPD47.h"
 #include "user_settings.h"
 #include "forecast_record.h"
 
-#define SCREEN_WIDTH   EPD_WIDTH
-#define SCREEN_HEIGHT  EPD_HEIGHT
-
-//String version = "2.7.1 / 4.7in"; 
-
-enum alignment {LEFT, RIGHT, CENTER};
-#define White         0xFF
-#define LightGrey     0xBB
-#define Grey          0x88
-#define DarkGrey      0x44
-#define Black         0x00
+//String version = "2.7.1 / 4.7in";
 
 #define autoscale_on  true
 #define autoscale_off false
@@ -31,14 +23,10 @@ enum alignment {LEFT, RIGHT, CENTER};
 
 boolean LargeIcon   = true;
 boolean SmallIcon   = false;
-#define Large  20           // For icon drawing
-#define Small  10           // For icon drawing
 String  Time_str = "--:--:--";
 String  Date_str = "-- --- ----";
 int     wifi_signal, CurrentHour = 0, CurrentMin = 0, CurrentSec = 0, EventCnt = 0, vref = 1100;
 //################ PROGRAM VARIABLES and OBJECTS ##########################################
-#define max_readings 24 // Limited to 3-days here, but could go to 5-days = 40 as the data is issued  
-
 Forecast_record_type  WxConditions[1];
 Forecast_record_type  WxForecast[max_readings];
 
@@ -87,26 +75,26 @@ boolean SetupTime() {
   return UpdateLocalTime();
 }
 
-uint8_t StartWiFi() 
+uint8_t StartWiFi()
 {
   Serial.println("\r\nWiFi Connecting to: " + String(ssid));
   IPAddress dns(8, 8, 8, 8); // Use Google DNS
   WiFi.disconnect();
   WiFi.mode(WIFI_STA); // switch off AP
   WiFi.begin(ssid, password);
-  if (WiFi.waitForConnectResult() != WL_CONNECTED) 
+  if (WiFi.waitForConnectResult() != WL_CONNECTED)
   {
     Serial.printf("WiFi connection failed, retrying...!\n");
     WiFi.disconnect(true); // delete SID/PWD
     delay(500);
     WiFi.begin(ssid, password);
   }
-  if (WiFi.waitForConnectResult() == WL_CONNECTED) 
+  if (WiFi.waitForConnectResult() == WL_CONNECTED)
   {
     wifi_signal = WiFi.RSSI(); // Get Wifi Signal strength now, because the WiFi will be turned off to save power!
     Serial.println("WiFi connected at: " + WiFi.localIP().toString());
   }
-  else 
+  else
   {
     wifi_signal = 0;
     Serial.println("WiFi connection *** FAILED ***");
@@ -268,7 +256,7 @@ bool obtainWeatherData(WiFiClient & client, const String & RequestType) {
   Serial.print(server + uri);
   Serial.println();
   if (RequestType == "onecall") uri += "&exclude=minutely,hourly,alerts,daily";
-  http.begin(client, server, 80, uri); 
+  http.begin(client, server, 80, uri);
   int httpCode = http.GET();
   if (httpCode == HTTP_CODE_OK) {
     if (!DecodeWeather(http.getStream(), RequestType)) return false;
@@ -563,19 +551,19 @@ void DisplayGraphSection(int x, int y) {
   int gx = (SCREEN_WIDTH - gwidth * 4) / 5 + 8;
   int gy = (SCREEN_HEIGHT - gheight - 30);
   int gap = gwidth + gx;
-  
+
   // 1. Temperature
   DrawGraph(gx + 0 * gap, gy, gwidth, gheight, 10, 30,    Units == "M" ? TXT_TEMPERATURE_C : TXT_TEMPERATURE_F, temperature_readings, max_readings, autoscale_on, barchart_off);
-  
+
   // 2. Humidity
   DrawGraph(gx + 1 * gap, gy, gwidth, gheight, 0, 100,   TXT_HUMIDITY_PERCENT, humidity_readings, max_readings, autoscale_off, barchart_off);
-  
+
   // 3. Rain
   if (SumOfPrecip(rain_readings, max_readings) >= SumOfPrecip(snow_readings, max_readings))
     DrawGraph(gx + 2 * gap + 5, gy, gwidth, gheight, 0, 30, Units == "M" ? TXT_RAINFALL_MM : TXT_RAINFALL_IN, rain_readings, max_readings, autoscale_on, barchart_on);
   else
     DrawGraph(gx + 2 * gap + 5, gy, gwidth, gheight, 0, 30, Units == "M" ? TXT_SNOWFALL_MM : TXT_SNOWFALL_IN, snow_readings, max_readings, autoscale_on, barchart_on);
-  
+
   // 4. Air Pressure
   DrawGraph(gx + 3 * gap, gy, gwidth, gheight, 900, 1050, Units == "M" ? TXT_PRESSURE_HPA : TXT_PRESSURE_IN, pressure_readings, max_readings, autoscale_on, barchart_off);
 }
@@ -646,14 +634,14 @@ void DrawRSSI(int x, int y, int rssi) {
     if (_rssi <= -60)  WIFIsignal = 18; //  -60dbm to  -41dbm displays 3-bars
     if (_rssi <= -80)  WIFIsignal = 12; //  -80dbm to  -61dbm displays 2-bars
     if (_rssi <= -100) WIFIsignal = 6;  // -100dbm to  -81dbm displays 1-bar
-    
-    if (rssi != 0) 
+
+    if (rssi != 0)
       fillRect(x + xpos * 8, y - WIFIsignal, 6, WIFIsignal, Black);
     else // draw empty bars
       drawRect(x + xpos * 8, y - WIFIsignal, 6, WIFIsignal, Black);
     xpos++;
   }
-  if (rssi == 0) 
+  if (rssi == 0)
     drawString(x + 28, y - 18, "x", LEFT);
 }
 
