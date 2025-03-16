@@ -113,7 +113,11 @@ void StopWiFi() {
 void InitialiseSystem() {
   StartTime = millis();
   Serial.begin(115200);
+#ifndef CONFIG_IDF_TARGET_ESP32S3
   while (!Serial);
+#else
+  delay(100); // Give time for the USB CDC to initialize on T5-ePaper-S3 board
+#endif
   Serial.println(String(__FILE__) + "\nStarting...");
   epd_init();
   framebuffer = (uint8_t *)ps_calloc(sizeof(uint8_t), EPD_WIDTH * EPD_HEIGHT / 2);
