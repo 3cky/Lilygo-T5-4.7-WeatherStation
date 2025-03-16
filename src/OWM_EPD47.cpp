@@ -405,7 +405,7 @@ void DisplayTempHumiPressSection(int x, int y) {
   setFont(OpenSans24B);
   drawString(x - 30, y, String(WxConditions[0].Temperature, 1) + "°   " + String(WxConditions[0].Humidity, 0) + "%", LEFT);
   setFont(OpenSans12B);
-  DrawPressureAndTrend(x + 215, y + 15, WxConditions[0].Pressure, WxConditions[0].Trend);
+  DrawPressureAndTrend(x + 255, y + 15, WxConditions[0].Pressure, WxConditions[0].Trend);
   int Yoffset = 42;
   if (WxConditions[0].Windspeed > 0) {
     drawString(x - 30, y + Yoffset, String(WxConditions[0].FeelsLike, 1) + "° "+TXT_FEELSLIKE, LEFT);   // Show FeelsLike temperature if windspeed > 0
