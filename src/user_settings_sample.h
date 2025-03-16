@@ -44,3 +44,4 @@ int  daylightOffset_sec = 3600;                            // In the UK DST is +
 #include "lang.h"
 //#include "lang_fr.h"
 //#include "lang_de.h"
+//#include "lang_ru.h"
